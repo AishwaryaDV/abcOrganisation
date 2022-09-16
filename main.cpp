@@ -155,7 +155,7 @@ void menu(){
 }
 
 int main(){
-    
+
 
     Office obj("pwc","bangalore",560102,500,true);
     cout<<obj.name;
