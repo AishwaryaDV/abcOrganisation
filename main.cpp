@@ -94,6 +94,7 @@ class Office{
     int pin;
     int employeeCount;
     bool limit;
+    string type;
 
     Office(string offName, string loc, int officePin, int count, bool officelimit){
         name=offName;
@@ -117,6 +118,7 @@ Local(string offname,string loc, int officePin, int count, bool officelimit):Off
 
     int calcLocalExpenses(int expenses){
         allowance+= expenses;
+        return allowance;
     }
 
 };
@@ -134,6 +136,7 @@ International(string offname,string loc, int officePin, int count, bool officeli
 
     int calcInterExpenses(int expenses){
         allowance+= expenses;
+        return allowance;
     }
 
 };
@@ -156,16 +159,6 @@ void menu(){
 
 int main(){
 
-
-    Office obj("pwc","bangalore",560102,500,true);
-    cout<<obj.name;
-    Local obj1("ps","mangalore",560567,600,false);
-    obj1.output();
-
-
-
-
-
     int choice;
     Employee employee("",0,0,""); //base employee template 
     Engineer emp("Aish",23,500,"3/4");
@@ -174,12 +167,17 @@ int main(){
     Architect arch("Vis",23,400,"5/5");
     Maid md("Sar",23,400,"5/5");
     Itstaff staff("Nag",23,400,"5/5");
-    //menu();
-    //cout<<"Enter your choice:";
-    //cin>>choice;
+
+    Office off("","",0,0,false); //base office template 
+    Local loc("PS","Mangalore",560567,600,false);
+    International inter("PWC","Bangalore",560102,500,true);
+   
+    menu();
+    cout<<"Enter your choice:";
+    cin>>choice;
 
         switch(choice){
-            case 1:{
+            case 1:{ //Display all the employees 
                 cout<<"Employee Names | Designation"<<endl;
                 cout<<emp.name<<" | "<<emp.type<<endl;
                 cout<<eng.name<<" | "<<eng.type<<endl;
@@ -191,7 +189,7 @@ int main(){
 
             }
 
-            case 2:{ 
+            case 2:{ //Add an employee
             //any object created with a switch case gets automatically destroyed once it goes
             // out of scope and all the acquired resources are released due to which we are able to 
             //create a new employee but are not able to add it to the existsing employee table or view it
@@ -208,7 +206,7 @@ int main(){
             } 
 
 
-            case 4:{
+            case 4:{ //Change the salary of an employee type 
                 cout<<"To change the salary of an employee type enter the employee type and amount in $"<<endl;
                 int amt=0;
                 string emptype="";
@@ -220,7 +218,7 @@ int main(){
 
             }
 
-            case 5:{
+            case 5:{ //Change the workhours of a particular employee type 
                 cout<<"To change the workhours of an employee type enter the type and value"<<endl;
                 int val=0;
                 string emptype="";
@@ -231,6 +229,46 @@ int main(){
                 break;
 
             }
+
+            case 10:{ //Add a new office 
+                string offName,offLoc;
+                int offPin, employeeCount;
+                bool officeLimit;
+                cout<<"To add a new office enter its name, location, pincode, no of employees present and the exepenses limit"<<endl;
+                cin>>offName>>offLoc>>offPin>>employeeCount>>officeLimit;
+                off.name=offName;
+                off.location=offLoc;
+                off.pin=offPin;
+                off.employeeCount=employeeCount;
+                off.limit=officeLimit;
+                break;
+
+            }
+
+            case 11:{ //Display all the offices  
+                cout<<"All the offices are listed below:"<<endl;
+                cout<<loc.name<<" | "<<loc.location<<endl;
+                cout<<inter.name<<" | "<<inter.location<<endl;
+                break;
+
+            }
+
+            case 12:{ //Add + calculate expenses of an office type 
+                int expense;
+                string expenseType;
+                cout<<"To add expenses to a particular type of office, enter the expenses amount in $ and the type"<<endl;
+                cin>>expense>>expenseType;
+                if(expenseType=="Local"){
+                    cout<<"Local total expense: $"<<loc.calcLocalExpenses(expense)<<endl;
+                }
+
+                else if(expenseType=="International"){
+                    cout<<"International total expense: $"<<inter.calcInterExpenses(expense)<<endl;
+                }
+                break;
+                
+            }
+
             default:
             cout<<"Wrong input!";
         }
