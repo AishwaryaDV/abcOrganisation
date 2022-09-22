@@ -52,15 +52,14 @@ What is the initial amount to be deposited?
 
 -
 List all customers
-Lists all the customers, money stored, type of account, a unique index and money added if an account for them has been created
-A customer can exists without an account lined to them.
+Lists all the customers, money stored, type of account, a unique index(if an account is craeted for that customer) and money added if an account for them has been created
+A customer can exist without an account linked to them.
 
 Open an account for a customer
 Display the list
 -Enter the index of the customer
 -What is the initial amount of money to be deposited
 -Display "As a retail customer you can open a  chceing account or a savings account. Press C for checking and S for savings" Take input
-
 Display the money in an account
 Display the entire list of customer x account
 -Enter the index of the customer
@@ -86,11 +85,21 @@ List all the offices first
 -Display "The expense amount is <added amount>"
 Once added and displayed again during listing of offices, it should show the incremented value 
 
-if(o[no-1].type=='L' && o[no-1].money<=100000)
+
+
+if(o[no-1].type=='L' && o[no-1].money<=100000){
+                    o[no-1].money+=offexpenses;
+                    cout<<"Total expense: "<<o[no-1].money<<endl;
                     cout<<"Expenses successfully added"<<endl;
-                else if(o[no-1].type=='I' && o[no-1].money<=200000)
-                    cout<<"Expenses successfully added"<<endl;
-                else{
-                    o[no-1].money-=offexpenses;
-                    cout<<"Limit reached! Cannot add expenses"<<endl;
                 }
+                else if(o[no-1].type=='I' && o[no-1].money<=200000){
+                    o[no-1].money+=offexpenses;
+                    cout<<"Total expense: "<<o[no-1].money<<endl;
+                    cout<<"Expenses successfully added"<<endl;
+                }
+                else{
+                    cout<<"Limit reached! Cannot add expenses/Index of office is not present"<<endl;
+                }
+
+
+

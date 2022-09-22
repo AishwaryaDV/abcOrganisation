@@ -20,8 +20,6 @@ class Employee{
     int workTime=0;
     string manager="None";
 
-   // Employee(){}
-
     Employee(string n,int a, int sal, string joining, string ty){
         name=n;
         age=a;
@@ -49,7 +47,6 @@ class Engineer: public Employee{
 class Manager: public Employee{
     public:
     int workTime=0;
-    //Manager():Employee(){};
     Manager(string name,int age, int sal, string joining,string ty):Employee(name,age,sal,joining,ty){}
     
     string output(){
@@ -98,10 +95,11 @@ class Office{
     int money=0;
     char type;
 
-    Office(string offName, string loc, int officePin, int count, bool officelimit){
+    Office(string offName, string loc, int officePin, char ty, int count, bool officelimit){
         name=offName;
         location=loc; 
         pin=officePin;
+        type=ty;
         employeeCount=count;
         limit=officelimit;
     }
@@ -111,38 +109,111 @@ class Local: public Office{
     public:
     string type="Local";
     int allowance=50000;
-
-Local(string offname,string loc, int officePin, int count, bool officelimit):Office(offname,loc,officePin,count,officelimit){}
+    Local(string offname,string loc, int officePin,char ty, int count, bool officelimit):Office(offname,loc,officePin,ty,count,officelimit){}
     
     void output(){
         cout<<"Inside derived class Local from base Office"<<endl;
     }
-
-    int calcLocalExpenses(int expenses){
-        allowance+= expenses;
-        return allowance;
-    }
-
 };
 
 class International: public Office{
     public:
     string type="International";
     int allowance=150000;
-
-International(string offname,string loc, int officePin, int count, bool officelimit):Office(offname,loc,officePin,count,officelimit){}
+    International(string offname,string loc, int officePin,char ty, int count, bool officelimit):Office(offname,loc,officePin,ty,count,officelimit){}
     
     void output(){
         cout<<"Inside derived class International from base Office"<<endl;
     }
 
-    int calcInterExpenses(int expenses){
-        allowance+= expenses;
-        return allowance;
+};
+
+class Customer{
+    public:
+    string name;
+    int age;
+    int aadhar;
+    string joiningDate;
+    string type;
+
+    Customer(string custName,int custAge,int custAadhar,string custDoj,string custType){
+        name=custName;
+        age=custAge;
+        aadhar=custAadhar;
+        joiningDate=custDoj;
+        type=custType;
     }
 
 };
 
+class Retail: public Customer{
+    public:
+    Retail(string custName,int custAge,int custAadhar,string custDoj,string custType):Customer(custName,custAge,custAadhar,custDoj,custType){}
+    
+    void output(){
+        cout<<"Inside derived class Retail from base Customer"<<endl;
+    }
+
+};
+
+class nonRetail: public Customer{
+    public:
+    nonRetail(string custName,int custAge,int custAadhar,string custDoj,string custType):Customer(custName,custAge,custAadhar,custDoj,custType){}
+    
+    void output(){
+        cout<<"Inside derived class nonRetail from base Customer"<<endl;
+    }
+
+};
+
+class Account{
+    public:
+    int accNumber;
+    string belongsTo;
+    string accDoj;
+    int deposit=0;
+
+    Account(int accnum,string belongsto,string accDoj,int accDeposit){
+        accNumber=accnum;
+        belongsTo=belongsto;
+        accDoj=accDoj;
+        deposit=accDeposit;
+    }
+
+};
+
+class Savings: public Account{
+    public:
+    int deposit=0;
+    Savings(int accnum,string belongsto,string accDoj,int accDeposit):Account(accnum,belongsto,accDoj,accDeposit){}
+    
+    void output(){
+        cout<<"Inside derived class Savings from base Account"<<endl;
+    }
+
+};
+
+class Checking: public Account{
+    public:
+    int deposit=0;
+    Checking(int accnum,string belongsto,string accDoj,int accDeposit):Account(accnum,belongsto,accDoj,accDeposit){}
+    
+    void output(){
+        cout<<"Inside derived class Checking from base Account"<<endl;
+    }
+
+};
+
+class Loan: public Account{
+    public:
+    int deposit=0;
+    Loan(int accnum,string belongsto,string accDoj,int accDeposit):Account(accnum,belongsto,accDoj,accDeposit){}
+    
+    void output(){
+        cout<<"Inside derived class Loan from base Account"<<endl;
+    }
+
+};
 
 void menu(){
     cout<<"----------------------------------------"<<endl;
@@ -153,6 +224,10 @@ void menu(){
     cout<<"Press 3 to display the manager of any employee chosen"<<endl;
     cout<<"Press 4 to change the salary of an employee"<<endl;
     cout<<"Press 5 to change the workhours of an employee"<<endl;
+    cout<<"Press 6 to create a new customer"<<endl;
+    cout<<"Press 7 to list all customers"<<endl;
+    cout<<"Press 8 to open an account for a customer"<<endl;
+    cout<<"Press 9 to display money in an account"<<endl;
     cout<<"Press 10 to list all offices"<<endl;
     cout<<"Press 11 to add a new office"<<endl;
     cout<<"Press 12 to add expenses to an office"<<endl;
@@ -160,20 +235,24 @@ void menu(){
     cout<<"----------------------------------------"<<endl;
 }
 
+bool inRange(int low, int high, int x){
+    return (low<=x && x<=high);
+}
+
 int main(){
 
     int choice,n;
-    int serial,offserial;
+    int serial,offserial,custserial;
 
     Employee emp("Ais",23,500,"3/4","Engineer");
     Employee eng("Vid",23,400,"5/5","Engineer");
-    Manager mg();
 
     vector<Employee> v;
     v.push_back(emp);
     v.push_back(eng);
     vector<Office> o;
     vector<Manager> m;
+    vector<Customer> c;
     
     do{
         menu();
@@ -215,15 +294,15 @@ int main(){
             } 
 
             case 3: { //display the manager of a given employee 
-                char option;
+                char choice;
                 string managerName,managerDoj,managerType;
                 int managerSal,managerAge;
                 int indx,managerindx;
 
                 if(m.empty()==true){
                     cout<<"There are no managers yet, would you like to create one? Y/N"<<endl;
-                    cin>>option;
-                    if(option=='T'){
+                    cin>>choice;
+                    if(choice == 'Y'){
                         cout<<"Enter name of manager"<<endl;
                         cin>>managerName;
                         cout<<"Enter age of manager"<<endl;
@@ -294,7 +373,7 @@ int main(){
 
             }
 
-            case 5:{//Change the salary of the selected employee
+            case 5:{//Change the worktime of the selected employee
                 cout<<"Name Age Salary JoiningDate Type "<<endl;
                 for(int i=0;i<v.size();i++){
                     serial=i+1;
@@ -311,6 +390,37 @@ int main(){
 
             }
 
+            case 6:{ //Create a new customer
+                string custname,custdoj,custtype;
+                int custage,custaadhar;
+                cout<<"To create a new customer:"<<endl;
+                cout<<"Enter name of customer"<<endl;
+                cin>>custname;
+                cout<<"Enter age of customer"<<endl;
+                cin>>custage;
+                cout<<"Enter aadhar no of customer"<<endl;
+                cin>>custaadhar;
+                cout<<"Enter the type of customer"<<endl;
+                cin>>custtype;
+                c.push_back(Customer(custname,custage,custaadhar,custdoj,custtype));
+                cout<<"Customer created successfully!"<<endl;
+                break;
+            }
+
+            case 7: {//List all customers 
+            if(c.empty()==true){
+                cout<<"No customers present, please add them!"<<endl;
+            }
+            else{
+                cout<<"Customer-Name Customer-Age Aadhar Customer-Type"<<endl;
+                for(int i=0;i<c.size();i++){
+                    custserial=i+1;
+                    cout<<custserial<<" "<<c[i].name<<" "<<c[i].age<<" "<<c[i].aadhar<<" "<<c[i].joiningDate<<" "<<c[i].type<<" "<<endl;
+                }
+            }
+            break;
+            }
+
             case 10:{//List all offices 
             if(o.empty()==true){
                 cout<<"There are no offices, please add them"<<endl;
@@ -318,7 +428,6 @@ int main(){
                 char offtype;
                 int offpin,empcount;
                 bool offlimit=false;
-
                 cout<<"Enter the name of the office"<<endl;
                 cin>>offname;
                 cout<<"Enter the office location"<<endl;
@@ -330,7 +439,7 @@ int main(){
                 cout<<"Enter the no. of employees"<<endl;
                 cin>>empcount;
                 cout<<"Office has been added successfully!"<<endl;
-                o.push_back(Office(offname,offloc,offpin,empcount,offlimit));
+                o.push_back(Office(offname,offloc,offpin,offtype,empcount,offlimit));
             }
             else{
                 cout<<"Name Location Pin EmployeeCount Type Expenses Limit"<<endl;
@@ -361,25 +470,38 @@ int main(){
                 cout<<"Enter the no. of employees"<<endl;
                 cin>>empcount;
                 cout<<"Office has been added successfully!"<<endl;
-                o.push_back(Office(offname,offloc,offpin,empcount,offlimit));
+                o.push_back(Office(offname,offloc,offpin,offtype,empcount,offlimit));
                 break;
 
             }
 
             case 12: { //Add expenses, check limit
+            if(o.empty()==true){
+                cout<<"No offices exist, please add them"<<endl;
+            }
+
+            else{
                 cout<<"Name Location Pin EmployeeCount Type Expenses Limit"<<endl;
                 for(int i=0;i<o.size();i++){
                     offserial=i+1;
                     cout<<offserial<<" "<<o[i].name<<" "<<o[i].location<<" "<<o[i].pin<<" "<<o[i].employeeCount<<" "<<o[i].type<<" "<<o[i].money<<" "<<o[i].type<<endl;
                 }
                 int no,offexpenses;
-                cout<<"Enter the index of the office"<<endl;
+                cout<<"Enter the index of the office you want to add expenses to"<<endl;
                 cin>>no;
-                cout<<"Enter the amount to be added"<<endl;
-                cin>>offexpenses;
+                if(inRange(1,o.size(),no)){
+                     cout<<"Enter the amount to be added"<<endl;
+                     cin>>offexpenses;
+                     o[no-1].money+=offexpenses;
+                     cout<<"Total expenses: "<<o[no-1].money<<endl;
+                }
 
-                o[no-1].money+=offexpenses;
-                break;
+                else{
+                    cout<<"Wrong index! Office does not exist"<<endl;
+                }
+            }
+                
+            break;
             }
 
             default:
