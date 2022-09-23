@@ -4,6 +4,7 @@
 #include<string>
 #include <iostream>
 #include <vector>
+#include <cstdlib>
 
 using namespace std;
 
@@ -134,21 +135,19 @@ class Customer{
     int age;
     int aadhar;
     string joiningDate;
-    string type;
 
-    Customer(string custName,int custAge,int custAadhar,string custDoj,string custType){
+    Customer(string custName,int custAge,int custAadhar,string custDoj){
         name=custName;
         age=custAge;
         aadhar=custAadhar;
         joiningDate=custDoj;
-        type=custType;
     }
 
 };
 
 class Retail: public Customer{
     public:
-    Retail(string custName,int custAge,int custAadhar,string custDoj,string custType):Customer(custName,custAge,custAadhar,custDoj,custType){}
+    Retail(string custName,int custAge,int custAadhar,string custDoj):Customer(custName,custAge,custAadhar,custDoj){}
     
     void output(){
         cout<<"Inside derived class Retail from base Customer"<<endl;
@@ -158,7 +157,7 @@ class Retail: public Customer{
 
 class nonRetail: public Customer{
     public:
-    nonRetail(string custName,int custAge,int custAadhar,string custDoj,string custType):Customer(custName,custAge,custAadhar,custDoj,custType){}
+    nonRetail(string custName,int custAge,int custAadhar,string custDoj):Customer(custName,custAge,custAadhar,custDoj){}
     
     void output(){
         cout<<"Inside derived class nonRetail from base Customer"<<endl;
@@ -184,7 +183,6 @@ class Account{
 
 class Savings: public Account{
     public:
-    int deposit=0;
     Savings(int accnum,string belongsto,string accDoj,int accDeposit):Account(accnum,belongsto,accDoj,accDeposit){}
     
     void output(){
@@ -195,7 +193,6 @@ class Savings: public Account{
 
 class Checking: public Account{
     public:
-    int deposit=0;
     Checking(int accnum,string belongsto,string accDoj,int accDeposit):Account(accnum,belongsto,accDoj,accDeposit){}
     
     void output(){
@@ -206,7 +203,6 @@ class Checking: public Account{
 
 class Loan: public Account{
     public:
-    int deposit=0;
     Loan(int accnum,string belongsto,string accDoj,int accDeposit):Account(accnum,belongsto,accDoj,accDeposit){}
     
     void output(){
@@ -227,10 +223,11 @@ void menu(){
     cout<<"Press 6 to create a new customer"<<endl;
     cout<<"Press 7 to list all customers"<<endl;
     cout<<"Press 8 to open an account for a customer"<<endl;
-    cout<<"Press 9 to display money in an account"<<endl;
-    cout<<"Press 10 to list all offices"<<endl;
-    cout<<"Press 11 to add a new office"<<endl;
-    cout<<"Press 12 to add expenses to an office"<<endl;
+    cout<<"Press 9 to deposit money to an account"<<endl;
+    cout<<"Press 10 to display money in an account(inc. interest%)"<<endl;
+    cout<<"Press 11 to list all offices"<<endl;
+    cout<<"Press 12 to add a new office"<<endl;
+    cout<<"Press 13 to add expenses to an office"<<endl;
     cout<<"Press -1 to exit"<<endl;
     cout<<"----------------------------------------"<<endl;
 }
@@ -253,6 +250,11 @@ int main(){
     vector<Office> o;
     vector<Manager> m;
     vector<Customer> c;
+    vector<Retail> r;
+    vector<nonRetail> nr;
+    vector<Savings> s;
+    vector<Checking> ch;
+    vector<Loan> l;
     
     do{
         menu();
@@ -265,7 +267,7 @@ int main(){
             }
 
             case 1:{ //Display all the employees
-                cout<<"Name Age Salary JoiningDate Type "<<endl;
+                cout<<"No. Name Age Salary JoiningDate Type"<<endl;
                 for(int i=0;i<v.size();i++){
                     serial=i+1;
                     cout<<serial<<" "<<v[i].name<<" "<<v[i].age<<" "<<v[i].salary<<" "<<v[i].joiningDate<<" "<<v[i].type<<" "<<v[i].workTime<<endl;
@@ -316,7 +318,7 @@ int main(){
                         cout<<"Manager created successfully!"<<endl;
                         m.push_back(Manager(managerName,managerAge,managerSal,managerDoj,managerType));
 
-                        cout<<"Name Age Salary JoiningDate Type "<<endl;
+                        cout<<"No. Name Age Salary JoiningDate Type "<<endl;
                         for(int i=0;i<v.size();i++){
                             serial=i+1;
                             cout<<serial<<" "<<v[i].name<<" "<<v[i].age<<" "<<v[i].salary<<" "<<v[i].joiningDate<<" "<<v[i].type<<" "<<v[i].workTime<<endl;
@@ -343,7 +345,7 @@ int main(){
                 }
 
                 else {
-                    cout<<"ManagerName MangerAge ManagerSalary ManagerDoj Type ManagerWorktime"<<endl;
+                    cout<<"No. ManagerName MangerAge ManagerSalary ManagerDoj Type ManagerWorktime"<<endl;
                     for(int i=0;i<m.size();i++){
                                 serial=i+1;
                                 cout<<serial<<" "<<m[i].name<<" "<<m[i].age<<" "<<m[i].salary<<" "<<m[i].joiningDate<<" "<<m[i].type<<" "<<m[i].workTime<<endl;
@@ -357,7 +359,7 @@ int main(){
             }
 
             case 4:{//Change the salary of the selected employee
-                cout<<"Name Age Salary JoiningDate Type Work-hours "<<endl;
+                cout<<"No. Name Age Salary JoiningDate Type Work-hours "<<endl;
                 for(int i=0;i<v.size();i++){
                     serial=i+1;
                     cout<<serial<<" "<<v[i].name<<" "<<v[i].age<<" "<<v[i].salary<<" "<<v[i].joiningDate<<" "<<v[i].type<<endl;
@@ -374,7 +376,7 @@ int main(){
             }
 
             case 5:{//Change the worktime of the selected employee
-                cout<<"Name Age Salary JoiningDate Type "<<endl;
+                cout<<"No. Name Age Salary JoiningDate Type "<<endl;
                 for(int i=0;i<v.size();i++){
                     serial=i+1;
                     cout<<serial<<" "<<v[i].name<<" "<<v[i].age<<" "<<v[i].salary<<" "<<v[i].joiningDate<<" "<<v[i].type<<endl;
@@ -391,8 +393,9 @@ int main(){
             }
 
             case 6:{ //Create a new customer
-                string custname,custdoj,custtype;
-                int custage,custaadhar;
+                string custname,custdoj,accdoj,custtype;
+                int custage,custaadhar,accnum,accdeposit;
+                char custchoice,accchoice;
                 cout<<"To create a new customer:"<<endl;
                 cout<<"Enter name of customer"<<endl;
                 cin>>custname;
@@ -400,28 +403,217 @@ int main(){
                 cin>>custage;
                 cout<<"Enter aadhar no of customer"<<endl;
                 cin>>custaadhar;
+                cout<<"Enter the day of customer joining"<<endl;
+                cin>>custdoj;
                 cout<<"Enter the type of customer"<<endl;
                 cin>>custtype;
-                c.push_back(Customer(custname,custage,custaadhar,custdoj,custtype));
-                cout<<"Customer created successfully!"<<endl;
+                if(custtype == "Retail"){
+                    r.push_back(Retail(custname,custage,custaadhar,custdoj));
+                    cout<<"Retail customer successfully created!"<<endl;
+                }
+                else {
+                     nr.push_back(nonRetail(custname,custage,custaadhar,custdoj));
+                    cout<<"Non-retail customer successfully created!"<<endl;
+                }
+                cout<<"Would you like to open an account for this cutsomer? Y/N"<<endl;
+                cin>>custchoice;
+                if(custchoice == 'Y'){
+                    cout<<"Retail customers can open Savings and Checking account and Non-retail can open only Loan accounts"<<endl;
+                    cout<<"Press S for Savings, C for Checking and L for Loan account creation"<<endl;
+                    cin>>accchoice;
+                    cout<<"Enter the day of opening the account"<<endl;
+                    cin>>accdoj;
+                    cout<<"Enter the amount of money you want to deposit"<<endl;
+                    cin>>accdeposit;
+                    accnum=rand()%10000+1;
+
+                    if(accchoice == 'S'){
+                        s.push_back(Savings(accnum,custname,accdoj,accdeposit));
+                        cout<<"Savings account created successfully!"<<endl;
+                    }
+                    else if(accchoice == 'C'){
+                        ch.push_back(Checking(accnum,custname,accdoj,accdeposit));
+                        cout<<"Checking account created successfully!"<<endl;
+                    }
+                    else{
+                        l.push_back(Loan(accnum,custname,accdoj,accdeposit));
+                        cout<<"Loan account created successfully!"<<endl;
+                    }
+                }
+                else{
+                    cout<<"No account has been created for this customer!"<<endl;
+                }
                 break;
             }
 
             case 7: {//List all customers 
-            if(c.empty()==true){
+            int nonAccCounter=0;
+            int AccCounter=0;
+
+            if(r.empty()==true && nr.empty()==true){
                 cout<<"No customers present, please add them!"<<endl;
             }
             else{
-                cout<<"Customer-Name Customer-Age Aadhar Customer-Type"<<endl;
-                for(int i=0;i<c.size();i++){
-                    custserial=i+1;
-                    cout<<custserial<<" "<<c[i].name<<" "<<c[i].age<<" "<<c[i].aadhar<<" "<<c[i].joiningDate<<" "<<c[i].type<<" "<<endl;
+                cout<<"Customers without an account are listed below:"<<endl;
+                cout<<"No. Customer-Name Customer-Age Aadhar Customer-Type"<<endl;
+                if(r.empty()!=true){
+                    for(int i=0;i<r.size();i++){
+                    cout<<++nonAccCounter<<" "<<r[i].name<<" "<<r[i].age<<" "<<r[i].aadhar<<" "<<r[i].joiningDate<<" "<<"Retail"<<endl;
+                    }
+                }
+                if(nr.empty()!=true){
+                    for(int i=0;i<nr.size();i++){
+                    cout<<++nonAccCounter<<" "<<nr[i].name<<" "<<nr[i].age<<" "<<nr[i].aadhar<<" "<<nr[i].joiningDate<<" "<<"Non-Retail"<<endl;
+                    }
+                }
+                cout<<endl;
+                cout<<"Customers with an account are listed below"<<endl;
+                cout<<"No. Acc-no Customer-Name Aadhar AccDoj Holdings AccountType"<<endl;
+                for(int i=0;i<s.size();i++){
+                    cout<<++AccCounter<<" "<<s[i].accNumber<<" "<<s[i].belongsTo<<" "<<r[i].aadhar<<" "<<s[i].accDoj<<" $"<<s[i].deposit<<" "<<"Savings"<<endl;
+                }
+
+                for(int i=0;i<ch.size();i++){
+                    cout<<++AccCounter<<" "<<ch[i].accNumber<<" "<<ch[i].belongsTo<<" "<<r[i].aadhar<<" "<<ch[i].accDoj<<" $"<<ch[i].deposit<<" "<<"Checking"<<endl;
+                }
+
+                 for(int i=0;i<l.size();i++){
+                    cout<<++AccCounter<<" "<<l[i].accNumber<<" "<<l[i].belongsTo<<" "<<nr[i].aadhar<<" "<<l[i].accDoj<<" $"<<l[i].deposit<<" "<<"Loan"<<endl;
                 }
             }
             break;
             }
 
-            case 10:{//List all offices 
+            case 8:{ //Open an account for an existing customer
+                int accIndex,accDeposit;
+                int counter=0;
+                char accChoice;
+                cout<<"List of customers without an account are:"<<endl;
+                if(r.empty()!=true){
+                    for(int i=0;i<r.size();i++){
+                    cout<<++counter<<" "<<r[i].name<<" "<<r[i].age<<" "<<r[i].aadhar<<" "<<r[i].joiningDate<<" "<<"Retail"<<endl;
+                    }
+                }
+                if(nr.empty()!=true){
+                    for(int i=0;i<nr.size();i++){
+                    cout<<++counter<<" "<<nr[i].name<<" "<<nr[i].age<<" "<<nr[i].aadhar<<" "<<nr[i].joiningDate<<" "<<"Non-Retail"<<endl;
+                    }
+                }
+                cout<<"Select the index of the customer you want to create an account for:"<<endl;
+                cin>>accIndex;
+                cout<<"Enter the initial amount of money you want to deposit:"<<endl;
+                cin>>accDeposit;
+                cout<<"As a retail customer you can open a Savings/Checking account, press S for Savings and C for Checking account"<<endl;
+                cout<<"As a non-retail customer you can open a Loan account, press L for Loan account "<<endl;
+                cin>>accChoice;
+                if(accChoice =='S'){
+                    s[accIndex-1].deposit+=accDeposit;
+                    cout<<"Money added to Savings account!"<<endl;
+                }
+                if(accChoice =='C'){
+                    ch[accIndex-1].deposit+=accDeposit;
+                    cout<<"Money added to Checking account!"<<endl;
+                }
+                if(accChoice =='L'){
+                    l[accIndex-1].deposit+=accDeposit;
+                    cout<<"Money added to Loan account!"<<endl;
+                }
+                break;
+            }
+
+            case 9: { //Deposit money to an account
+                int accDeposit=0, counter=0;
+                int accIndex,newMoney=0;
+                char addMoneyChoice;
+                string accType;
+
+                cout<<"Customer-Account-Deposit list"<<endl;
+                cout<<"No. Acc-no Customer-Name Aadhar AccDoj Holdings AccountType"<<endl;
+                for(int i=0;i<s.size();i++){
+                    cout<<++counter<<" "<<s[i].accNumber<<" "<<s[i].belongsTo<<" "<<r[i].aadhar<<" "<<s[i].accDoj<<" $"<<s[i].deposit<<" "<<"Savings"<<endl;
+                }
+
+                for(int i=0;i<ch.size();i++){
+                    cout<<++counter<<" "<<ch[i].accNumber<<" "<<ch[i].belongsTo<<" "<<r[i].aadhar<<" "<<ch[i].accDoj<<" $"<<ch[i].deposit<<" "<<"Checking"<<endl;
+                }
+
+                 for(int i=0;i<l.size();i++){
+                    cout<<++counter<<" "<<l[i].accNumber<<" "<<l[i].belongsTo<<" "<<nr[i].aadhar<<" "<<l[i].accDoj<<" $"<<l[i].deposit<<" "<<"Loan"<<endl;
+                }
+                cout<<"To deposit money into an account:"<<endl;
+                cout<<"Enter the index of customer"<<endl;
+                cin>>accIndex;
+                cout<<"Enter the account type of the selected index"<<endl;
+                cin>>accType;
+                cout<<"Enter the amount you want to deposit"<<endl;
+                cin>>newMoney;
+
+                if(accType == "Savings"){
+                    s[accIndex-1].deposit+=newMoney;
+                    cout<<"Money added to "<<s[accIndex-1].belongsTo<<"'s Savings account"<<endl;
+
+                }
+                else if(accType == "Checking"){
+                    ch[accIndex-1].deposit+=newMoney;
+                    cout<<"Money added to "<<ch[accIndex-1].belongsTo<<"'s Checking account"<<endl;
+
+                }
+                else if(accType == "Loan"){
+                    l[accIndex-1].deposit+=newMoney;
+                    cout<<"Money added to "<<l[accIndex-1].belongsTo<<"'s Loan account"<<endl;
+
+                }
+                else{
+                    cout<<"Wrong index/type of account chosen!"<<endl;
+                }
+                break;
+            }
+
+            case 10:{//Display the money in an account + interest
+                int accDeposit=0, counter=0;
+                int accIndex;
+                char addMoneyChoice;
+                string accType;
+                cout<<"Customer-Account-Deposit list"<<endl;
+                cout<<"No. Acc-no Customer-Name Aadhar AccDoj Holdings AccountType"<<endl;
+                for(int i=0;i<s.size();i++){
+                    cout<<++counter<<" "<<s[i].accNumber<<" "<<s[i].belongsTo<<" "<<r[i].aadhar<<" "<<s[i].accDoj<<" $"<<s[i].deposit<<" "<<"Savings"<<endl;
+                }
+
+                for(int i=0;i<ch.size();i++){
+                    cout<<++counter<<" "<<ch[i].accNumber<<" "<<ch[i].belongsTo<<" "<<r[i].aadhar<<" "<<ch[i].accDoj<<" $"<<ch[i].deposit<<" "<<"Checking"<<endl;
+                }
+
+                 for(int i=0;i<l.size();i++){
+                    cout<<++counter<<" "<<l[i].accNumber<<" "<<l[i].belongsTo<<" "<<nr[i].aadhar<<" "<<l[i].accDoj<<" $"<<l[i].deposit<<" "<<"Loan"<<endl;
+                }
+                cout<<"Enter the index of customer who's balance you want to see after added interest"<<endl;
+                cin>>accIndex;
+                cout<<"Enter the account type of the selected index"<<endl;
+                cin>>accType;
+                if(accType == "Savings"){
+                    s[accIndex-1].deposit+=(s[accIndex-1].deposit)*0.05;
+                    cout<<"Money in "<<s[accIndex-1].belongsTo<<"'s Savings account is $"<<s[accIndex-1].deposit<<endl;
+
+                }
+                else if(accType == "Checking"){
+                    ch[accIndex-1].deposit+=(ch[accIndex-1].deposit)*0.07;
+                    cout<<"Money in "<<ch[accIndex-1].belongsTo<<"'s Checking account is $"<<ch[accIndex-1].deposit<<endl;
+
+                }
+                else if(accType == "Loan"){
+                    l[accIndex-1].deposit-=(l[accIndex-1].deposit)*0.09;
+                    cout<<"Money in "<<l[accIndex-1].belongsTo<<"'s Loan account is $"<<l[accIndex-1].deposit<<endl;
+
+                }
+                else{
+                    cout<<"Wrong index/type of account chosen!"<<endl;
+                }
+                break;
+
+            }
+
+            case 11:{ //List all offices 
             if(o.empty()==true){
                 cout<<"There are no offices, please add them"<<endl;
                 string offname,offloc;
@@ -442,7 +634,7 @@ int main(){
                 o.push_back(Office(offname,offloc,offpin,offtype,empcount,offlimit));
             }
             else{
-                cout<<"Name Location Pin EmployeeCount Type Expenses Limit"<<endl;
+                cout<<"No.Name Location Pin EmployeeCount Type Expenses Limit"<<endl;
                 for(int i=0;i<o.size();i++){
                     offserial=i+1;
                     cout<<offserial<<" "<<o[i].name<<" "<<o[i].location<<" "<<o[i].pin<<" "<<o[i].employeeCount<<" "<<o[i].type<<" "<<o[i].money<<" "<<o[i].type<<endl;
@@ -452,7 +644,7 @@ int main(){
             break;
             }
 
-            case 11: {//Add a new office
+            case 12: {//Add a new office
                 cout<<"To add a new office:"<<endl;
                 string offname,offloc;
                 char offtype;
@@ -475,13 +667,13 @@ int main(){
 
             }
 
-            case 12: { //Add expenses, check limit
+            case 13: { //Add expenses, check limit
             if(o.empty()==true){
                 cout<<"No offices exist, please add them"<<endl;
             }
 
             else{
-                cout<<"Name Location Pin EmployeeCount Type Expenses Limit"<<endl;
+                cout<<"No. Name Location Pin EmployeeCount Type Expenses Limit"<<endl;
                 for(int i=0;i<o.size();i++){
                     offserial=i+1;
                     cout<<offserial<<" "<<o[i].name<<" "<<o[i].location<<" "<<o[i].pin<<" "<<o[i].employeeCount<<" "<<o[i].type<<" "<<o[i].money<<" "<<o[i].type<<endl;

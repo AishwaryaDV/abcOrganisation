@@ -52,7 +52,7 @@ What is the initial amount to be deposited?
 
 -
 List all customers
-Lists all the customers, money stored, type of account, a unique index(if an account is craeted for that customer) and money added if an account for them has been created
+Lists all the customers, money stored, type of account, a unique index(if an account is created for that customer) and money added if an account for them has been created
 A customer can exist without an account linked to them.
 
 Open an account for a customer
@@ -61,6 +61,8 @@ Display the list
 -What is the initial amount of money to be deposited
 -Display "As a retail customer you can open a  chceing account or a savings account. Press C for checking and S for savings" Take input
 Display the money in an account
+
+Display the money in an account + interest calculation 
 Display the entire list of customer x account
 -Enter the index of the customer
 -Display the selected index with the balance
