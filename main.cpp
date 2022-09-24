@@ -1,10 +1,12 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
-#include<string>
+#include <string>
 #include <iostream>
 #include <vector>
 #include <cstdlib>
+#include <bits/stdc++.h>
+#include <stdio.h>
 
 using namespace std;
 
@@ -238,6 +240,8 @@ bool inRange(int low, int high, int x){
 
 int main(){
 
+    clock_t start,end;
+    double time_taken;
     int choice,n;
     int serial,offserial,custserial;
 
@@ -425,7 +429,7 @@ int main(){
                     cin>>accdoj;
                     cout<<"Enter the amount of money you want to deposit"<<endl;
                     cin>>accdeposit;
-                    accnum=rand()%10000+1;
+                    accnum=1 + (rand() % 100000);
 
                     if(accchoice == 'S'){
                         s.push_back(Savings(accnum,custname,accdoj,accdeposit));
@@ -506,6 +510,9 @@ int main(){
                 cout<<"As a retail customer you can open a Savings/Checking account, press S for Savings and C for Checking account"<<endl;
                 cout<<"As a non-retail customer you can open a Loan account, press L for Loan account "<<endl;
                 cin>>accChoice;
+                //start running the clock here
+                start= clock();
+
                 if(accChoice =='S'){
                     s[accIndex-1].deposit+=accDeposit;
                     cout<<"Money added to Savings account!"<<endl;
@@ -591,18 +598,23 @@ int main(){
                 cin>>accIndex;
                 cout<<"Enter the account type of the selected index"<<endl;
                 cin>>accType;
+                //stop running the clock here;
+                end= clock();
+                //time calculation in seconds 
+                time_taken=double(end - start) / double(CLOCKS_PER_SEC);
+
                 if(accType == "Savings"){
-                    s[accIndex-1].deposit+=(s[accIndex-1].deposit)*0.05;
+                    s[accIndex-1].deposit+=(s[accIndex-1].deposit)*0.05*(time_taken/60);
                     cout<<"Money in "<<s[accIndex-1].belongsTo<<"'s Savings account is $"<<s[accIndex-1].deposit<<endl;
 
                 }
                 else if(accType == "Checking"){
-                    ch[accIndex-1].deposit+=(ch[accIndex-1].deposit)*0.07;
+                    ch[accIndex-1].deposit+=(ch[accIndex-1].deposit)*0.07*(time_taken/60);
                     cout<<"Money in "<<ch[accIndex-1].belongsTo<<"'s Checking account is $"<<ch[accIndex-1].deposit<<endl;
 
                 }
                 else if(accType == "Loan"){
-                    l[accIndex-1].deposit-=(l[accIndex-1].deposit)*0.09;
+                    l[accIndex-1].deposit-=(l[accIndex-1].deposit)*0.09*(time_taken/60);
                     cout<<"Money in "<<l[accIndex-1].belongsTo<<"'s Loan account is $"<<l[accIndex-1].deposit<<endl;
 
                 }
