@@ -89,19 +89,3 @@ Once added and displayed again during listing of offices, it should show the inc
 
 
 
-if(o[no-1].type=='L' && o[no-1].money<=100000){
-                    o[no-1].money+=offexpenses;
-                    cout<<"Total expense: "<<o[no-1].money<<endl;
-                    cout<<"Expenses successfully added"<<endl;
-                }
-                else if(o[no-1].type=='I' && o[no-1].money<=200000){
-                    o[no-1].money+=offexpenses;
-                    cout<<"Total expense: "<<o[no-1].money<<endl;
-                    cout<<"Expenses successfully added"<<endl;
-                }
-                else{
-                    cout<<"Limit reached! Cannot add expenses/Index of office is not present"<<endl;
-                }
-
-
-

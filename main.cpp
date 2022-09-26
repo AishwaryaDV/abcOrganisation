@@ -709,14 +709,25 @@ int main(){
                      cout<<"Enter the amount to be added"<<endl;
                      cin>>offexpenses;
                      o[no-1].money+=offexpenses;
-                     cout<<"Total expenses: "<<o[no-1].money<<endl;
+                     if(o[no-1].money<=100000 && o[no-1].type == 'L'){
+                        cout<<"Money successfully added!"<<endl;
+                        cout<<"Total expenses: "<<o[no-1].money<<endl;
+                     }
+                     else if(o[no-1].money<=200000 && o[no-1].type == 'I'){
+                        cout<<"Money successfully added!"<<endl;
+                        cout<<"Total expenses: "<<o[no-1].money<<endl;
+                     }
+                     else if((o[no-1].money>100000 && o[no-1].type == 'L') || (o[no-1].money>200000 && o[no-1].type == 'I')) {
+                        o[no-1].limit=true;
+                        o[no-1].money-=offexpenses;
+                        cout<<"Limit reached! Cannot add amount"<<endl;
+                     }
                 }
 
                 else{
                     cout<<"Wrong index! Office does not exist"<<endl;
                 }
             }
-                
             break;
             }
 
