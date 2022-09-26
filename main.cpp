@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <bits/stdc++.h>
 #include <stdio.h>
+#include <ctype.h>
 
 using namespace std;
 
@@ -94,7 +95,7 @@ class Office{
     string location;
     int pin;
     int employeeCount=0;
-    bool limit=false;
+    bool limit;
     int money=0;
     char type;
 
@@ -429,7 +430,9 @@ int main(){
                     cin>>accdoj;
                     cout<<"Enter the amount of money you want to deposit"<<endl;
                     cin>>accdeposit;
-                    accnum=1 + (rand() % 100000);
+                    //accnum=1 + (rand() % 100000);    old method will generate random numbers but sometimes they can be single/double, triple digits aswell which cannot be used as an ccount number 
+                    srand(time(0));
+                    accnum=rand();
 
                     if(accchoice == 'S'){
                         s.push_back(Savings(accnum,custname,accdoj,accdeposit));
@@ -492,6 +495,13 @@ int main(){
                 int accIndex,accDeposit;
                 int counter=0;
                 char accChoice;
+                
+              if(r.empty() && nr.empty()){
+                cout<<"No customers present! Account can only be added if customers are present."<<endl;
+                cout<<"Please add a customer by pressing option 6"<<endl;
+              }
+
+              else {
                 cout<<"List of customers without an account are:"<<endl;
                 if(r.empty()!=true){
                     for(int i=0;i<r.size();i++){
@@ -525,6 +535,8 @@ int main(){
                     l[accIndex-1].deposit+=accDeposit;
                     cout<<"Money added to Loan account!"<<endl;
                 }
+              }
+            
                 break;
             }
 
@@ -631,7 +643,7 @@ int main(){
                 string offname,offloc;
                 char offtype;
                 int offpin,empcount;
-                bool offlimit=false;
+                bool offlim=false;
                 cout<<"Enter the name of the office"<<endl;
                 cin>>offname;
                 cout<<"Enter the office location"<<endl;
@@ -643,13 +655,13 @@ int main(){
                 cout<<"Enter the no. of employees"<<endl;
                 cin>>empcount;
                 cout<<"Office has been added successfully!"<<endl;
-                o.push_back(Office(offname,offloc,offpin,offtype,empcount,offlimit));
+                o.push_back(Office(offname,offloc,offpin,offtype,empcount,offlim));
             }
             else{
                 cout<<"No.Name Location Pin EmployeeCount Type Expenses Limit"<<endl;
                 for(int i=0;i<o.size();i++){
                     offserial=i+1;
-                    cout<<offserial<<" "<<o[i].name<<" "<<o[i].location<<" "<<o[i].pin<<" "<<o[i].employeeCount<<" "<<o[i].type<<" "<<o[i].money<<" "<<o[i].type<<endl;
+                    cout<<offserial<<" "<<o[i].name<<" "<<o[i].location<<" "<<o[i].pin<<" "<<o[i].employeeCount<<" "<<o[i].type<<" "<<o[i].money<<" "<<o[i].limit<<endl;
                 }
             }
 
@@ -688,7 +700,7 @@ int main(){
                 cout<<"No. Name Location Pin EmployeeCount Type Expenses Limit"<<endl;
                 for(int i=0;i<o.size();i++){
                     offserial=i+1;
-                    cout<<offserial<<" "<<o[i].name<<" "<<o[i].location<<" "<<o[i].pin<<" "<<o[i].employeeCount<<" "<<o[i].type<<" "<<o[i].money<<" "<<o[i].type<<endl;
+                    cout<<offserial<<" "<<o[i].name<<" "<<o[i].location<<" "<<o[i].pin<<" "<<o[i].employeeCount<<" "<<o[i].type<<" "<<o[i].money<<" "<<o[i].limit<<endl;
                 }
                 int no,offexpenses;
                 cout<<"Enter the index of the office you want to add expenses to"<<endl;
